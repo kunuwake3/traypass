@@ -4,6 +4,7 @@ using System.Text;
 using System.Text.Json;
 using System.Security.Cryptography;
 using System.Windows.Forms;
+using System.Reflection;
 
 namespace TrayPasswordGenerator;
 
@@ -40,7 +41,7 @@ public sealed class TrayAppContext : ApplicationContext
 
         _tray = new NotifyIcon
         {
-            Icon  = SystemIcons.Shield,        // можно заменить своей иконкой
+            Icon  = LoadEmbeddedIcon(),        // можно заменить своей иконкой
             Visible = true,
             Text = "Tray Password Generator"
         };
