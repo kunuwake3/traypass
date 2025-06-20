@@ -18,8 +18,12 @@ jobs:
         with:
           dotnet-version: '8.0.x'
 
-      - name: Publish skinny EXE       # ← отступ ровно такой же, как у предыдущих «- name»
-        shell: pwsh                    #   (4 пробела до «-»)
+      - name: Show SDK version
+        shell: pwsh
+        run: dotnet --version         # ← увидите 8.0.300 (не 9.0.301)
+
+      - name: Publish skinny EXE
+        shell: pwsh
         run: |
           dotnet publish TrayPasswordGenerator.csproj -c Release -r win-x64 `
             --self-contained true `
@@ -32,3 +36,4 @@ jobs:
         with:
           name: TrayPasswordGenerator
           path: bin/Release/net8.0-windows/win-x64/publish/TrayPasswordGenerator.exe
+
