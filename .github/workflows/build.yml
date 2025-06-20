@@ -20,8 +20,8 @@ jobs:
 
     - name: Publish single-file self-contained exe
   # shell: pwsh   # по умолчанию так и будет
-      run: |
-      dotnet publish TrayPasswordGenerator.csproj -c Release -r win-x64 `
+  run: |
+    dotnet publish TrayPasswordGenerator.csproj -c Release -r win-x64 `
       --self-contained true `
       /p:PublishSingleFile=true `
       /p:PublishTrimmed=true `
