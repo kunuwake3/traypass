@@ -20,19 +20,20 @@ jobs:
 
       - name: Show SDK version
         shell: pwsh
-        run: dotnet --version         # ← увидите 8.0.300 (не 9.0.301)
+        run: dotnet --version          # должно вывести 8.0.xxx
 
       - name: Publish skinny EXE
         shell: pwsh
         run: |
-        dotnet publish TrayPasswordGenerator.csproj -c Release -r win-x64 `
-        --self-contained true `
-        /p:PublishSingleFile=true `
-        /p:PublishTrimmed=true
+          dotnet publish TrayPasswordGenerator.csproj -c Release -r win-x64 `
+            --self-contained true `
+            /p:PublishSingleFile=true `
+            /p:PublishTrimmed=true `
+            /p:EnableTrimAnalyzer=true `
+            /p:EnableWindowsFormsTrimSupport=true
 
       - name: Upload artefact
         uses: actions/upload-artifact@v4
         with:
           name: TrayPasswordGenerator
           path: bin/Release/net8.0-windows/win-x64/publish/TrayPasswordGenerator.exe
-
