@@ -1,42 +1,38 @@
-name: build
+name: Build-Win-x64-SingleFile
 
 on:
   push:
-    branches: [ main ]
+    branches: [ "main" ]
   pull_request:
+    branches: [ "main" ]
 
 jobs:
   build:
     runs-on: windows-latest
 
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-        
-      - name: Clean
-        run: git clean -xfd
-        
-      - name: Setup .NET 8 LTS
-        uses: actions/setup-dotnet@v4
-        with:
-          dotnet-version: '8.0.x'
+    - name: Checkout
+      uses: actions/checkout@v4
 
-      - name: Show SDK version
-        shell: pwsh
-        run: dotnet --version          # должно вывести 8.0.xxx
+    - name: Setup .NET SDK 8
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: '8.0.x'
 
-      - name: Publish skinny EXE
-        shell: pwsh
-        run: |
-          dotnet publish TrayPasswordGenerator.csproj -c Release -r win-x64 `
-            --self-contained true `
-            /p:PublishSingleFile=true `
-            /p:PublishTrimmed=true `
-            /p:EnableTrimAnalyzer=true `
-            /p:EnableWindowsFormsTrimSupport=true
+    - name: Restore
+      run: dotnet restore TrayPasswordGenerator.csproj
 
-      - name: Upload artefact
-        uses: actions/upload-artifact@v4
-        with:
-          name: TrayPasswordGenerator
-          path: bin/Release/net8.0-windows/win-x64/publish/TrayPasswordGenerator.exe
+    - name: Publish (single exe, no trimming)
+      run: >
+        dotnet publish TrayPasswordGenerator.csproj
+        -c Release
+        -r win-x64
+        --self-contained true
+        /p:PublishSingleFile=true
+        /p:PublishTrimmed=false
+
+    - name: Upload artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: TrayPasswordGenerator
+        path: bin\Release\net8.0-windows\win-x64\publish\TrayPasswordGenerator.exe
