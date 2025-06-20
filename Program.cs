@@ -5,6 +5,7 @@ using System.Text.Json;
 using System.Security.Cryptography;
 using System.Windows.Forms;
 using System.Reflection;
+using System.Drawing;
 
 namespace TrayPasswordGenerator;
 
