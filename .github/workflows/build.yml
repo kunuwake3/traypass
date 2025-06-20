@@ -19,12 +19,13 @@ jobs:
         dotnet-version: '8.0.x'
 
     - name: Publish single-file self-contained exe
+  # shell: pwsh   # по умолчанию так и будет
       run: |
-        dotnet publish TrayPasswordGenerator.csproj -c Release -r win-x64
-        --self-contained true
-        /p:PublishSingleFile=true
-        /p:PublishTrimmed=true
-        /p:EnableWindowsFormsTrimSupport=true
+    dotnet publish TrayPasswordGenerator.csproj -c Release -r win-x64 `
+      --self-contained true `
+      /p:PublishSingleFile=true `
+      /p:PublishTrimmed=true `
+      /p:EnableWindowsFormsTrimSupport=true
 
     - name: Upload artefact
       uses: actions/upload-artifact@v4
