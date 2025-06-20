@@ -30,10 +30,8 @@ public sealed class TrayAppContext : ApplicationContext
     private readonly NotifyIcon _tray;
     private PasswordOptions _opts;
     private readonly string _cfgPath =
-        Path.Combine(
-            Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
-            "TrayPasswordGenerator",
-            "settings.json");
+        Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
+                     "TrayPasswordGenerator", "settings.json");
 
     public TrayAppContext()
     {
@@ -41,17 +39,25 @@ public sealed class TrayAppContext : ApplicationContext
 
         _tray = new NotifyIcon
         {
-            Icon  = LoadEmbeddedIcon(),        // можно заменить своей иконкой
+            Icon    = LoadEmbeddedIcon(),
             Visible = true,
-            Text = "Tray Password Generator"
+            Text    = "Tray Password Generator"
         };
         _tray.MouseClick += OnClick;
 
-        // КОНТЕКСТНОЕ МЕНЮ (правый клик)
         var menu = new ContextMenuStrip();
         menu.Items.Add("Настройки…", null, (_, __) => ShowSettings());
-        menu.Items.Add("Выход",     null, (_, __) => ExitThread());
+        menu.Items.Add("Выход",      null, (_, __) => ExitThread());
         _tray.ContextMenuStrip = menu;
+    }
+
+    private static Icon LoadEmbeddedIcon()
+    {
+        var asm = Assembly.GetExecutingAssembly();
+        var resName = asm.GetName().Name + ".tray_favicon.ico";   // «TrayPasswordGenerator.tray_favicon.ico»
+        using var s = asm.GetManifestResourceStream(resName)
+                   ?? throw new InvalidOperationException($"Не найден ресурс {resName}");
+        return new Icon(s);
     }
 
     private void OnClick(object? s, MouseEventArgs e)
