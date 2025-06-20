@@ -25,11 +25,10 @@ jobs:
       - name: Publish skinny EXE
         shell: pwsh
         run: |
-          dotnet publish TrayPasswordGenerator.csproj -c Release -r win-x64 `
-            --self-contained true `
-            /p:PublishSingleFile=true `
-            /p:PublishTrimmed=true `
-            /p:EnableWindowsFormsTrimSupport=true
+        dotnet publish TrayPasswordGenerator.csproj -c Release -r win-x64 `
+        --self-contained true `
+        /p:PublishSingleFile=true `
+        /p:PublishTrimmed=true
 
       - name: Upload artefact
         uses: actions/upload-artifact@v4
